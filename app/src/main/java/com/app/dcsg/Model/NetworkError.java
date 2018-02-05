@@ -1,7 +1,7 @@
 package com.app.dcsg.Model;
 
 /**
- * Created by srikanth on 1/30/2018.
+ * Created by srikanth
  */
 
 public class NetworkError {

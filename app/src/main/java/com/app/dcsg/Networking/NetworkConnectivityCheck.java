@@ -4,7 +4,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * Created by srika on 1/31/2018.
+ * Created by srikanth
  */
 
 public class NetworkConnectivityCheck implements ConnectivityChecker{

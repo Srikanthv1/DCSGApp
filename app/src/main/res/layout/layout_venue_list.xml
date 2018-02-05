@@ -7,7 +7,7 @@
         android:id="@+id/venueTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="List of Stores currently available" />
+        android:text="@string/venue_store_text" />
 
     <LinearLayout
         android:id="@+id/venue_linear_layout"

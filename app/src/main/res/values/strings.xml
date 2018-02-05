@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">DCSG</string>
+    <string name="venue_button_text1">More Details</string>
+    <string name="venue_button_text2">Less  Details</string>
+    <string name="venue_store_text">List of Stores currently available</string>
+    <string name="store_locator">Store Locator</string>
+    <string name="welcome_text">Welcome to Dick\'s Sporting Goods !</string>
+    <string name="rating">Rating :</string>
+    <string name="address">Address:</string>
+    <string name="city">City:</string>
+    <string name="location_not_found">Location can\'t be retrieved</string>
+    <string name="no_provider_found">No Provider Found</string>
+    <string name="gps_disabled">GPS is currently Disabled, Do you want to Enable ?</string>
+    <string name="no_network_found">Network not Available. Please check the connection</string>
+
+
 </resources>

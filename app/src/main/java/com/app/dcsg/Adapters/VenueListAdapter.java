@@ -2,36 +2,39 @@ package com.app.dcsg.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.app.dcsg.Model.ResponseModel.VenueResponseModel;
 import com.app.dcsg.Model.VenueDetails;
 import com.app.dcsg.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by srika on 1/31/2018.
+ * Created by srikanth
  */
 
 public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.VenueViewHolder> {
 
     private List<VenueDetails> mVenueDetails;
     private Context mContext;
+    VenueListAdapter.VenueViewHolder.IOnFavoriteSelection mOnFavoriteSelection;
 
     public VenueListAdapter() {
     }
 
-    public VenueListAdapter(Context context, List<VenueDetails> mVenueDetails) {
+    public VenueListAdapter(Context context, List<VenueDetails> mVenueDetails,
+                            VenueViewHolder.IOnFavoriteSelection mOnFavoriteSelection) {
         this.mContext = context;
         this.mVenueDetails = mVenueDetails;
+        this.mOnFavoriteSelection = mOnFavoriteSelection;
     }
 
     public static class VenueViewHolder extends RecyclerView.ViewHolder {
@@ -40,48 +43,84 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
         TextView rating;
         TextView address;
         TextView city;
-        Button favorite;
+        Button moreDetails;
+        ImageButton favorite;
+        ImageView storeImage;
 
         public VenueViewHolder(View itemView) {
             super(itemView);
+
+            //Map the variables with corresponding views
 
             name = itemView.findViewById(R.id.nameTextView);
             rating = itemView.findViewById(R.id.ratingTextView);
             address = itemView.findViewById(R.id.addressTextView);
             city = itemView.findViewById(R.id.cityTextView);
+            moreDetails = itemView.findViewById(R.id.moreDetailsButton);
             favorite = itemView.findViewById(R.id.favoriteButton);
+            storeImage = itemView.findViewById(R.id.storeImageView);
 
         }
+
+        public interface IOnFavoriteSelection {
+            void setFavoriteItem(int pos);
+        }
+
     }
 
     @Override
     public VenueViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_venue_details, parent, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Toast.makeText(mContext,"Clicked"+getItemId(),Toast.LENGTH_LONG).show();
-            }
-        });
+        //Inflate the View
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_venue_details,
+                parent, false);
         return new VenueViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final VenueViewHolder holder, final int position) {
         holder.name.setText(mVenueDetails.get(position).getName());
-        holder.rating.setText(String.format(Locale.ENGLISH,"%.1f", mVenueDetails.get(position).getRating()));
+        holder.rating.setText(String.format(Locale.ENGLISH, "%.1f",
+                mVenueDetails.get(position).getRating()));
         holder.address.setText(mVenueDetails.get(position).getAddress());
         holder.city.setText(mVenueDetails.get(position).getCity());
-        holder.favorite.setOnClickListener(new View.OnClickListener() {
+        if (position == 0) {
+            holder.favorite.setImageResource(android.R.drawable.btn_star_big_on);
+        } else {
+            holder.favorite.setImageResource(android.R.drawable.btn_star_big_off);
+        }
+
+        holder.moreDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (holder.storeImage.getVisibility() == View.GONE) {
+                    holder.storeImage.setVisibility(View.VISIBLE);
+                    holder.moreDetails.setText(R.string.venue_button_text2);
+                    Picasso.with(mContext)
+                            .load(mVenueDetails.get(position).getUrl())
+                            .placeholder(R.drawable.dickslogo)
+                            .into(holder.storeImage);
+                } else {
+                    holder.moreDetails.setText(R.string.venue_button_text1);
+                    holder.storeImage.setVisibility(View.GONE);
+                }
+                notifyDataSetChanged();
+
+            }
+        });
+
+        holder.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnFavoriteSelection.setFavoriteItem(position);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        //Log.e("in Adapter", ""+mVenueDetails.size());
+        //return the List size
         return mVenueDetails.size();
     }
+
 }

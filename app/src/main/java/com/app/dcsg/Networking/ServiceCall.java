@@ -13,14 +13,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by srika on 1/30/2018.
+ * Created by srikanth
  */
 
 public class ServiceCall {
 
     private static final String LOG_TAG = "ServiceCall";
 
-    public static NetworkService getNetworkService(){
+    public static NetworkService getNetworkService() {
 
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -49,7 +49,7 @@ public class ServiceCall {
             Request original = chain.request();
             //Ensure Content type is JSON
             Request request = original.newBuilder()
-                    .header("Accept","application/json")
+                    .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .method(original.method(), original.body())
                     .build();

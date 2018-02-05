@@ -7,7 +7,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by srikanth on 1/30/2018.
+ * Created by srikanth
  */
 
 public class CustomCallback<Object> implements Callback<Object> {

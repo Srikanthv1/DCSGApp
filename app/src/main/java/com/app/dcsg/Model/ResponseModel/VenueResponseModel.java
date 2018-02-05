@@ -1,12 +1,12 @@
 package com.app.dcsg.Model.ResponseModel;
 
-import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
- * Created by srikanth on 1/30/2018.
+ * Created by srikanth
  */
 
 

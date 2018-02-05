@@ -1,7 +1,7 @@
 package com.app.dcsg.Networking;
 
 /**
- * Created by srika on 1/30/2018.
+ * Created by srikanth
  */
 
 public class Url {
