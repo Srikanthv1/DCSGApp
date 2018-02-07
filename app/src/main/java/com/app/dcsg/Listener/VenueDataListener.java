@@ -3,9 +3,9 @@ package com.app.dcsg.Listener;
 import com.app.dcsg.Model.ResponseModel.VenueResponseModel;
 
 /**
- * Created by srikanth
+ * Listener for the VenueDataCall event
+ * Created by Srikanth on 1/02/18
  */
-//Listener for the VenueDataCall event
 public interface VenueDataListener {
 
     void onSuccess(VenueResponseModel venueResponse);

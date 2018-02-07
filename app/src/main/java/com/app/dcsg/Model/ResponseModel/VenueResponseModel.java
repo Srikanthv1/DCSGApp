@@ -6,7 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by srikanth
+ * Model class for List of Venues as Response
+ * Created by Srikanth on 1/02/18
  */
 
 

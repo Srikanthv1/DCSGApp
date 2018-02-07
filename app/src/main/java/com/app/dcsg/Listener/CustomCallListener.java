@@ -5,10 +5,10 @@ import com.app.dcsg.Networking.NetworkErrorParser;
 import retrofit2.Response;
 
 /**
- * Created by srikanth
+ * Listener for the Network Call event
+ * Created by Srikanth on 1/02/18
  */
 
-//Listener for the Network Call event
 public interface CustomCallListener {
 
     void onSuccess(Response response);

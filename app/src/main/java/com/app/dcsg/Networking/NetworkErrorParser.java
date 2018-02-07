@@ -6,7 +6,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /**
- * Created by srikanth
+ * Created by Srikanth on 1/02/18
  */
 
 public class NetworkErrorParser {
@@ -28,17 +28,14 @@ public class NetworkErrorParser {
         if (response != null) {
             @SuppressWarnings("unchecked")
             Response<ResponseBody> body = (Response<ResponseBody>) response;
-
             mNetworkError.setMessage("Server Error. Please try again");
         } else {
             mNetworkError.setMessage("Error Occurred. Please try again");
         }
-
         return mNetworkError;
     }
 
     public NetworkError getNetworkError() {
         return mNetworkError;
     }
-
 }

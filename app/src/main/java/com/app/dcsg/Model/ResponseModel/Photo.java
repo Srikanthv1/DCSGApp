@@ -4,6 +4,10 @@ package com.app.dcsg.Model.ResponseModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Model class for Photo as Response
+ * Created by Srikanth on 1/02/18
+ */
 public class Photo {
 
     @SerializedName("photoId")

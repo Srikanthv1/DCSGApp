@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -16,7 +17,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.app.dcsg.Adapters.VenueListAdapter;
@@ -33,23 +33,31 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by Srikanth
+ * This Class handles fetching the Location of User and retrieving & displaying
+ * Store details based on the Web API response.
+ * Created by Srikanth on 1/02/18
  */
 
 public class VenueActivity extends AppCompatActivity implements LocationListener {
 
+    private static final int LOCATION_UPDATE_INTERVAL = 10000; // In Milliseconds
+    private static final int MINIMUM_DISTANCE_INTERVAL = 100; //In Meters
     private static final String TAG = "VenueActivity";
-    public static final int LOCATION_UPDATE_INTERVAL = 10000; // In Milliseconds
-    public static final int MINIMUM_DISTANCE_INTERVAL = 100; //In Meters
+    private static final String IMAGE_NOT_FOUND = "Image Not Found";
 
+    //Location Manager object
     LocationManager mLocationManager;
+    //Location Provider used to keep track of GPS, Network Providers
     String mProvider;
 
+    //Recycler View
     RecyclerView mVenueListView;
+    //List of Venue Details
     List<VenueDetails> mVenueDetails;
+    //Sorted List of Venue details based on current location
     List<VenueDetails> mSortedVenueDetails;
-
-    android.location.Location location;
+    //Location object
+    Location location;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +72,6 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
         LinearLayoutManager layoutManager = new LinearLayoutManager(VenueActivity.this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mVenueListView.setLayoutManager(layoutManager);
-        //venueListView.setOverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS);
 
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -106,16 +113,20 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
             }
             if (location != null) {
                 onLocationChanged(location);
-            } else {  // If the Location is still Null
+            } else {
+                // Location cannot be retrieved
                 Toast.makeText(getBaseContext(), R.string.location_not_found,
                         Toast.LENGTH_SHORT).show();
             }
-        } else { //GPS, Cellular and WiFi are not available
+        } else {
+            //GPS, Network Provider are not available
             Toast.makeText(getBaseContext(), R.string.no_provider_found, Toast.LENGTH_SHORT).show();
         }
-
     }
 
+    /**
+     * This method initializes LocationManager object and triggers an Alert if the GPS is disabled
+     */
     public void statusCheck() {
         final LocationManager manager =(LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -124,6 +135,10 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
         }
     }
 
+    /**
+     * This method will generate an Alert to ask User's consent for enabling the GPS
+     * if the GPS has been disabled
+     */
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(
@@ -148,14 +163,14 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
     protected void onResume() {
         super.onResume();
 
+        //  Fetch the JSON response using Venue DataProvider on Success method
         VenueDataProvider venueDataProvider = new VenueDataProvider();
         venueDataProvider.fetchVenueDetails(new VenueDataListener() {
             @Override
             public void onSuccess(VenueResponseModel venueResponse) {
 
-                //Fetch the JSON response using Retrofit2
                 List<Venue> venues = venueResponse.getVenues();
-
+                //Create a Venue helper model to map the response contents of venueResponse.
                 for (Venue venue : venues) {
                     if (venue.getVerified()) {
                         VenueDetails venueDetails = new VenueDetails();
@@ -168,13 +183,14 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
                         if (venue.getPhotos().size() > 0) {
                             venueDetails.setUrl(venue.getPhotos().get(0).getUrl());
                         } else {
-                            venueDetails.setUrl("Image Not Found");
+                            venueDetails.setUrl(IMAGE_NOT_FOUND);
                         }
                         //Add the data to the List
                         mVenueDetails.add(venueDetails);
                     }
                 }
 
+                //Invoke the getCurrentLocation to capture the Current User Location
                 if (location != null) {
                     getCurrentLocation(location);
                 }
@@ -182,28 +198,47 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
                 setFavoriteList();
             }
 
+            /**
+             *  Display the customized error message to User using toast message.
+             * @param errorMessage Contains the error details
+             */
             @Override
             public void onError(String errorMessage) {
-
+                //The request to Fetch data was not successful.
                 Toast.makeText(VenueActivity.this, errorMessage, Toast.LENGTH_LONG).show();
 
             }
         });
     }
 
-
+    /**
+     * This method is called as soon as User's location is changed
+     * based on min. distance interval and min. time interval set.
+     * @param currentLocation Location captured based on User's current position
+     */
     @Override
-    public void onLocationChanged(android.location.Location currentLocation) {
+    public void onLocationChanged(Location currentLocation) {
         // Passing Current Location in getCurrentLocation()
         getCurrentLocation(currentLocation);
     }
 
-    public void getCurrentLocation(android.location.Location currentLocation) {
+    /**
+     * This method fetches current location and shares the details for sorting Venue data
+     * @param currentLocation Location captured based on User's current position
+     */
+    public void getCurrentLocation(Location currentLocation) {
         //sort the Venue List based on Current Location
         mSortedVenueDetails = sortLocations(mVenueDetails, currentLocation.getLatitude(),
                 currentLocation.getLongitude());
     }
 
+    /**
+     * This method Sorts the Venue Locations based on the current Geo-Location of User
+     * @param venueLocations List of Venue Locations containing Latitude and Longitude
+     * @param myLatitude User's current Latitude
+     * @param myLongitude User's current Longitude
+     * @return returns a List of sorted Venue Location
+     */
     public static List<VenueDetails> sortLocations(
             List<VenueDetails> venueLocations, final double myLatitude, final double myLongitude) {
         Comparator comparator = new Comparator<VenueDetails>() {
@@ -211,12 +246,12 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
             @Override
             public int compare(VenueDetails origin1, VenueDetails origin2) {
                 float[] result1 = new float[3];
-                android.location.Location.distanceBetween(myLatitude, myLongitude,
+                Location.distanceBetween(myLatitude, myLongitude,
                         origin1.getLatitude(), origin1.getLongitude(), result1);
                 Float distance1 = result1[0];
 
                 float[] result2 = new float[3];
-                android.location.Location.distanceBetween(myLatitude, myLongitude,
+                Location.distanceBetween(myLatitude, myLongitude,
                         origin2.getLatitude(), origin2.getLongitude(), result2);
                 Float distance2 = result2[0];
 
@@ -228,6 +263,9 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
         return venueLocations;
     }
 
+    /**
+     * This method is used to set the favorite store based on tapping the Favorite icon.
+     */
     private void setFavoriteList() {
 
         mVenueListView.setAdapter(new VenueListAdapter(VenueActivity.this,
@@ -265,6 +303,10 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
 
     }
 
+    /**
+     * This method is called when the provider is disabled
+     * @param provider Provider can be either GPS / Network provider
+     */
     @Override
     public void onProviderDisabled(String provider) {
         if (ActivityCompat.checkSelfPermission(this,
@@ -273,10 +315,5 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

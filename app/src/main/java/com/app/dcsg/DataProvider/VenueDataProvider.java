@@ -11,14 +11,16 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * Created by srikanth
+ * This Class provides the Store information as a response based on the Web API call
+ * Created by Srikanth on 1/02/18
  */
 
 public class VenueDataProvider {
 
     public void fetchVenueDetails(final VenueDataListener venueDataListener) {
 
-        //Trigger an Async Network call to fetch the JSON data and pass it as a response using Retrofit2
+        //Trigger an Async Network call to fetch the JSON data and
+        // pass it as a response using Retrofit2 Library
 
         Call<VenueResponseModel> networkCall = ServiceCall.getNetworkService().getVenueDetails();
         networkCall.enqueue(new CustomCallback<VenueResponseModel>(new CustomCallListener() {

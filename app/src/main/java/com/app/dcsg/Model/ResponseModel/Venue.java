@@ -6,6 +6,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Model class for Venues as Response
+ * Created by Srikanth on 1/02/18
+ */
+
 public class Venue {
 
     @SerializedName("id")

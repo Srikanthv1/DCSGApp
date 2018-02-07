@@ -1,7 +1,7 @@
 package com.app.dcsg.Model;
 
 /**
- * Created by Srikanth
+ * Created by Srikanth on 1/02/18
  */
 
 public class VenueDetails {

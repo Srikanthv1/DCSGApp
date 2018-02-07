@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by srikanth
+ * This Class handles the Custom List Adapter coupled with the Recycler View
+ * which is used for populating the Store details in VenueActivity
+ * Created by Srikanth on 1/02/18
  */
 
 public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.VenueViewHolder> {
@@ -37,6 +39,9 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
         this.mOnFavoriteSelection = mOnFavoriteSelection;
     }
 
+    /**
+     * Class to map the Custom ViewHolder
+     */
     public static class VenueViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
@@ -62,12 +67,21 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
 
         }
 
+        /**
+         * Interface to handle the Favorite store selection
+         */
         public interface IOnFavoriteSelection {
             void setFavoriteItem(int pos);
         }
 
     }
 
+    /**
+     * This method is called during the ViewHolder creation
+     * @param parent
+     * @param viewType
+     * @return ViewHolder instance
+     */
     @Override
     public VenueViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         //Inflate the View
@@ -76,6 +90,11 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
         return new VenueViewHolder(view);
     }
 
+    /**
+     * This method binds the ViewHolder to view
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(final VenueViewHolder holder, final int position) {
         holder.name.setText(mVenueDetails.get(position).getName());
@@ -117,6 +136,10 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
         });
     }
 
+    /**
+     * This method returns the List size
+     * @return List size
+     */
     @Override
     public int getItemCount() {
         //return the List size
