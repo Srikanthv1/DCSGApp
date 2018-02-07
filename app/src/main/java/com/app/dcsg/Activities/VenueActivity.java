@@ -42,7 +42,6 @@ public class VenueActivity extends AppCompatActivity implements LocationListener
 
     private static final int LOCATION_UPDATE_INTERVAL = 10000; // In Milliseconds
     private static final int MINIMUM_DISTANCE_INTERVAL = 100; //In Meters
-    private static final String TAG = "VenueActivity";
     private static final String IMAGE_NOT_FOUND = "Image Not Found";
 
     //Location Manager object

@@ -13,12 +13,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
+ * Class to handle custom request Interceptor
  * Created by Srikanth on 1/02/18
  */
 
 public class ServiceCall {
-
-    private static final String LOG_TAG = "ServiceCall";
 
     public static NetworkService getNetworkService() {
 

@@ -4,6 +4,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
+ * Used for Network connectivity handling
  * Created by Srikanth on 1/02/18
  */
 

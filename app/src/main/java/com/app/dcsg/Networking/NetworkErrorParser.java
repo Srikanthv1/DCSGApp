@@ -2,7 +2,6 @@ package com.app.dcsg.Networking;
 
 import com.app.dcsg.Model.NetworkError;
 
-import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /**
@@ -26,8 +25,6 @@ public class NetworkErrorParser {
     private NetworkError parseErrorMessage(Response response) {
         mNetworkError = new NetworkError();
         if (response != null) {
-            @SuppressWarnings("unchecked")
-            Response<ResponseBody> body = (Response<ResponseBody>) response;
             mNetworkError.setMessage("Server Error. Please try again");
         } else {
             mNetworkError.setMessage("Error Occurred. Please try again");

@@ -1,6 +1,7 @@
 package com.app.dcsg.Networking;
 
 /**
+ * Used for declaring various API URLs
  * Created by Srikanth on 1/02/18
  */
 

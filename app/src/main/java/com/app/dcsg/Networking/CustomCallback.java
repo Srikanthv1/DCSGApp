@@ -7,6 +7,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
+ * Class used for handling Custom callback while using Retrofit
  * Created by Srikanth on 1/02/18
  */
 

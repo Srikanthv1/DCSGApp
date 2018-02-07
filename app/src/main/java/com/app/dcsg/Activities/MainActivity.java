@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
      * This method is the starting point of the project where the User is displayed
      * with a Store locator button. This method also check for Network connectivity and
      * alerts the User if the device has no network connectivity.
-     * @param savedInstanceState
+     * @param savedInstanceState Helps in saving Activity's instance state
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

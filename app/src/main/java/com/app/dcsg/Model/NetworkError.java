@@ -1,6 +1,7 @@
 package com.app.dcsg.Model;
 
 /**
+ * Network Model for handling various error codes and messages
  * Created by Srikanth on 1/02/18
  */
 

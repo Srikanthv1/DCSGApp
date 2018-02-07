@@ -27,7 +27,7 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
 
     private List<VenueDetails> mVenueDetails;
     private Context mContext;
-    VenueListAdapter.VenueViewHolder.IOnFavoriteSelection mOnFavoriteSelection;
+    private VenueListAdapter.VenueViewHolder.IOnFavoriteSelection mOnFavoriteSelection;
 
     public VenueListAdapter() {
     }
@@ -78,8 +78,8 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
 
     /**
      * This method is called during the ViewHolder creation
-     * @param parent
-     * @param viewType
+     * @param parent ViewGroup instance
+     * @param viewType ViewType value
      * @return ViewHolder instance
      */
     @Override
@@ -92,8 +92,8 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
 
     /**
      * This method binds the ViewHolder to view
-     * @param holder
-     * @param position
+     * @param holder Holder instance
+     * @param position Item Position
      */
     @Override
     public void onBindViewHolder(final VenueViewHolder holder, final int position) {
@@ -116,7 +116,7 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
                     holder.storeImage.setVisibility(View.VISIBLE);
                     holder.moreDetails.setText(R.string.venue_button_text2);
                     Picasso.with(mContext)
-                            .load(mVenueDetails.get(position).getUrl())
+                            .load(mVenueDetails.get(holder.getAdapterPosition()).getUrl())
                             .placeholder(R.drawable.dickslogo)
                             .into(holder.storeImage);
                 } else {
@@ -131,7 +131,7 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
         holder.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnFavoriteSelection.setFavoriteItem(position);
+                mOnFavoriteSelection.setFavoriteItem(holder.getAdapterPosition());
             }
         });
     }
